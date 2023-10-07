@@ -212,7 +212,7 @@ void calculate_average(uint32_t ui32samples, uint32_t *buffer,
  *  Helper function to enable any sensor on the MKII 
  *
  *  parameters:
- *    enablePeripheral - Valid inputs: MICROPHONE | JOYSTICK | ACCELEROMETER | BUZZER | BUTTON_UP 
+ *    enablePeripheral - MICROPHONE | JOYSTICK | ACCELEROMETER | BUZZER | BUTTON_UP 
  *                        | BUTTON_DOWN
  *   
  *  returns:
@@ -280,14 +280,14 @@ void SENSOR_enable(uint32_t enablePeripheral) {
   // Check which ports should be enabled
   if (gpio_ports_to_enable & GPIO_PORTE_BASE) {
 
-    GPIOPort_init(SYSCTL_PERIPH_GPIOE);
+    PERIPH_init(SYSCTL_PERIPH_GPIOE);
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Enable all pins that should be set as ADC pins
     GPIOPinTypeADC(GPIO_PORTE_BASE, gpio_porte_pins_to_enable);
   }
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (gpio_ports_to_enable & GPIO_PORTF_BASE) {
-    GPIOPort_init(SYSCTL_PERIPH_GPIOF);
+    PERIPH_init(SYSCTL_PERIPH_GPIOF);
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Specify the buzzer to act as output
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1);
@@ -295,7 +295,7 @@ void SENSOR_enable(uint32_t enablePeripheral) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (gpio_ports_to_enable & GPIO_PORTL_BASE) {
 
-    GPIOPort_init(SYSCTL_PERIPH_GPIOL);
+    PERIPH_init(SYSCTL_PERIPH_GPIOL);
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Set the buttons to act as input
     GPIOPinTypeGPIOInput(GPIO_PORTL_BASE, gpio_portl_pins_to_enable);
@@ -305,46 +305,22 @@ void SENSOR_enable(uint32_t enablePeripheral) {
 //=============================================================================
 // clang-format off
 /*
- * Function: ADC_init
+ * Function: PERIPH_init
  * -------------------------
- *  Helper function to initialize any ADC module
+ *  Helper function to initialize any peripheral module
  *
  *  parameters:
- *    ui32base - The ADC base address
+ *    ui32base - The peripheral base address
  *
  *  returns:
  *    N/A
  */
 // clang-format on
 //=============================================================================
-void ADC_init(uint32_t ui32Base) {
+void PERIPH_init(uint32_t ui32Base) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Enable the ADC module
   SysCtlPeripheralEnable(ui32Base);
   while (!SysCtlPeripheralReady(ui32Base)) {
-  }
-}
-
-//=============================================================================
-// clang-format off
-/*
- * Function: GPIOPort_init
- * ---------------------------------
- *  Helper function to initialize any GPIO_PORTx_BASE
- *
- *  parameters:
- *    ui32GPIOx - The GPIO_PORTx_BASE to be enabled
- *
- *  returns:
- *    N/A
- */
-// clang-format on
-//=============================================================================
-void GPIOPort_init(uint32_t ui32GPIOx) {
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Enable the specified GPIO_PORTx_BASE
-  SysCtlPeripheralEnable(ui32GPIOx);
-  while (!SysCtlPeripheralReady(ui32GPIOx)) {
   }
 }
 
