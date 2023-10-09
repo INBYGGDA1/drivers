@@ -49,6 +49,8 @@ void __error__(char *pcFilename, uint32_t ui32Line) {
  * Function: ConfigureSystemClock
  * ----------------------------------
  *  Configure the systemclock for the TM4C129
+ *  There exist some errata with using the main oscillator and adc, hence the
+ *  internal oscillator is specified instead
  *  
  *  parameters:
  *    uint32_t frequency: The desired frequency to run on.
@@ -285,15 +287,11 @@ void SENSOR_enable(uint32_t enablePeripheral) {
   if (enablePeripheral & BUTTON_UP) {
     gpio_ports_to_enable |= GPIO_PORTL_BASE;
     gpio_portl_pins_to_enable |= GPIO_PIN_1;
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Set the buttons to act as input
   }
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if (enablePeripheral & BUTTON_DOWN) {
     gpio_ports_to_enable |= GPIO_PORTL_BASE;
     gpio_portl_pins_to_enable |= GPIO_PIN_2;
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Set the buttons to act as input
   }
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Check which ports should be enabled
@@ -385,22 +383,24 @@ uint32_t abs_diff(uint32_t a, uint32_t b) {
  */
 // clang-format on
 //=============================================================================
-void clear_text(tContext *sContext, int x, int y, int width, int height) {
+void clear_text(tContext *sContext, int xCoordinate, int yCoordinate,
+                int widthX, int heightY) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // When updating the text on the screen, the values could have changed to be
   // << than the previous value and thus will not draw over the text furthest to
   // the right on the LCD. To circumvent this I draw a white rectangle across
   // the LCD screen with the height of the current fontSize.
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  tRectangle rect = {x, y, x + width, y + height};
+  tRectangle rect = {xCoordinate, yCoordinate, xCoordinate + widthX,
+                     yCoordinate + heightY};
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Since the background is white, I change the rectangle to white and fills
+  // Since the background is white, change the rectangle to white and fill
   // the are to avoid any overlap when drawing.
   GrContextForegroundSet(sContext, ClrWhite);
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Draw the rectangle in the specified coordinates
   GrRectFill(sContext, &rect);
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Set the foreground back to black since I now am going to draw the text.
+  // Set the foreground back to black.
   GrContextForegroundSet(sContext, ClrBlack);
 }
