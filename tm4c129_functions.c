@@ -46,6 +46,24 @@ void __error__(char *pcFilename, uint32_t ui32Line) {
 //=============================================================================
 // clang-format off
 /*
+ * Function: ConfigureSystemClock
+ * ----------------------------------
+ *  Configure the systemclock for the TM4C129
+ *  
+ *  parameters:
+ *    uint32_t frequency: The desired frequency to run on.
+ *    uint32_t *systemClock: The pointer to the systemclock.
+ *    
+ * */
+void ConfigureSystemClock(uint32_t frequency, uint32_t *systemClock) {
+
+  *systemClock = SysCtlClockFreqSet((SYSCTL_XTAL_25MHZ | SYSCTL_OSC_MAIN |
+                                     SYSCTL_USE_PLL | SYSCTL_CFG_VCO_480),
+                                    frequency);
+}
+//=============================================================================
+// clang-format off
+/*
  * Function: ConfigureUART
  * ------------------------------
  *  Autmatically configure the UART using the TivWare peripheral driver library 
@@ -69,6 +87,7 @@ void ConfigureUART() {
   UARTStdioConfig(0, 115200, 16000000);
 }
 
+void UARTClearScreen() { UARTprintf("\033[2J"); }
 //=============================================================================
 // clang-format off
 /*

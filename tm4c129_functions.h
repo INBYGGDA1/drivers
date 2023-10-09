@@ -21,6 +21,8 @@ struct node {
 };
 
 extern void ConfigureUART();
+extern void ConfigureSystemClock(uint32_t frequency, uint32_t *systemClock);
+extern void UARTClearScreen();
 extern void ADC_newSequence(uint32_t ui32base, uint32_t ui32SequenceNum,
                             uint32_t ui32ADC_Channel, uint32_t ui32Samples);
 extern void sampleData(uint32_t ui32base, uint32_t ui32SequenceNum,
