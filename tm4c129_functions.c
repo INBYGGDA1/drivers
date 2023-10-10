@@ -11,11 +11,8 @@
  */
 
 /*================================================================*/
-#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 //=============================================================================
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
@@ -23,12 +20,10 @@
 #include "driverlib/adc.h"
 //=============================================================================
 #include "driverlib/uart.h"
-#include "drivers/buttons.h"
 #include "inc/hw_memmap.h"
 //=============================================================================
 #include "CF128x128x16_ST7735S.h"
 //=============================================================================
-#include "grlib/grlib.h"
 #include "utils/uartstdio.h"
 #include "tm4c129_functions.h"
 
